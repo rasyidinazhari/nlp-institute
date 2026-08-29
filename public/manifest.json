@@ -1,0 +1,17 @@
+{
+  "name": "Pola Bicaramu - Beleef NLP",
+  "short_name": "Pola Bicaramu",
+  "description": "Cermin cara kamu bicara sebagai leader. Practice companion dari Het NLP Instituut.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#047857",
+  "icons": [
+    {
+      "src": "/globe.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

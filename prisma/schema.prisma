@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Scenario {
+  id        String     @id @default(cuid())
+  language  String     @default("id")
+  text      String
+  category  String     @default("toward-away")
+  order     Int        @default(0)
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  responses Response[]
+
+  @@index([language, category, active, order])
+}
+
+model Keyword {
+  id        String   @id @default(cuid())
+  language  String   @default("id")
+  category  String   @default("toward-away")
+  phrase    String
+  direction String   // "toward" | "away"
+  createdAt DateTime @default(now())
+
+  @@index([language, category, direction])
+  @@unique([language, category, phrase])
+}
+
+model MirrorTemplate {
+  id        String   @id @default(cuid())
+  language  String   @default("id")
+  category  String   @default("toward-away")
+  template  String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Response {
+  id                String    @id @default(cuid())
+  sessionId         String
+  scenarioId        String
+  scenario          Scenario  @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  text              String
+  detectedDirection String?
+  matchedKeywords   String[]
+  createdAt         DateTime  @default(now())
+  expiresAt         DateTime?
+
+  @@index([sessionId, createdAt])
+  @@index([scenarioId])
+  @@index([expiresAt])
+}
+
+model Admin {
+  id           String @id @default(cuid())
+  email        String @unique
+  passwordHash String
+}
